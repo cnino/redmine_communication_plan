@@ -2,14 +2,12 @@
 <%= form_tag :action => 'update' do %>
   <%= error_messages_for 'workperformance_report' %>
   <div class="box tabular">
-    <!-- div id="all_attributes" -->
       <div class="splitcontentleft">
         <p>
           <label for='author'><%= l(:field_assigned_to) %></label>
           <%= select_tag('author', principals_options_for_select(@assignables, @workperformance_report.user.id.to_s) ) %>
         </p>
       </div>
-    <!-- /div -->
   </div>
   <%= submit_tag l(:button_submit) %>
 <% end %>
