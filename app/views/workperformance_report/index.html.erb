@@ -1,0 +1,28 @@
+<h2> <%= l(:label_report_plural) %> </h2>
+
+<% unless @workperformance_reports.present? %>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% else %>
+    <div class="autoscroll">
+    <table class="list issues">
+      <thead>
+        <th> <%= l(:label_date_range) %> </th>
+        <th> <%= l(:label_send_date) %> </th>
+        <th> <%= l(:field_author) %> </th>
+        <th> <%= l(:label_target_audience) %> </th>
+        <th> <%= l(:label_flag) %> </th>
+      </thead>
+      <tbody>
+        <% @workperformance_reports.each do |report| %>
+        <tr class="<%= cycle('odd', 'even') %> issue">
+          <td> <%= link_to "#{format_date(report.start_period)} a  #{format_date(report.end_period)}", :controller => "workperformance_report", :action => "show", :id => report %> </td>
+          <td> <%= format_date(report.send_date) %> </td>
+          <td> <%= report.user.firstname %> <%= report.user.lastname %> </td>
+          <td> <%= report.sent_target_audience %> </td>
+          <td> <center> <div style="width:17px; height:17px; background-color:#<%= report.flag.color%>"> </div> </center> </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+    </div>
+<% end %>

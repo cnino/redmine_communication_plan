@@ -1,0 +1,6 @@
+# English strings go here for Rails i18n
+pt-BR:
+  label_communication_plan: Plano de Comunicação
+  label_send_date: Data de envio
+  label_target_audience: Público-alvo
+  label_flag: Sinalizador
