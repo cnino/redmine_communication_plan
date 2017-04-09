@@ -23,16 +23,15 @@ class WorkperformanceReportController < ApplicationController
     def show
       logger.info ">>> (^_^) [WorkperformanceReportController#show]"
       @project = Project.find(params[:project_id])
-      #@assignables = @project.members
+      #uso a função assignable_users já definida em Project
       @assignables = @project.assignable_users
 
-      logger.info ">>> assignables: #{@assignables}"
-      logger.info ">>> assignables.collect: #{@assignables.collect}"
+      #busco o relatório
+      @workperformance_report = WorkperformanceReport.includes(:user, :flag, :workperformance_report_status).find(params[:id])
 
-      logger.info ">>> params[:id] " + params[:id]
-      @workperformance_report = WorkperformanceReport.includes(:user, :flag).find(params[:id])
-      logger.info ">>> objeto report: " + @workperformance_report.id.to_s
-
+      #também devo levar a lista de estados possíveis para o relatório
+      @report_statuses = WorkperformanceReportStatus.all.includes(:issue_status).map {|i| i.issue_status }
+      logger.info ">>> statuses #{@report_statuses}"
     end
 
     #atualiza os dados de um relatório

@@ -2,12 +2,36 @@
 <%= form_tag :action => 'update' do %>
   <%= error_messages_for 'workperformance_report' %>
   <div class="box tabular">
-      <div class="splitcontentleft">
-        <p>
-          <label for='author'><%= l(:field_assigned_to) %></label>
-          <%= select_tag('author', principals_options_for_select(@assignables, @workperformance_report.user.id.to_s) ) %>
-        </p>
-      </div>
+      <p>
+        <label for='author'><%= l(:field_assigned_to) %></label>
+        <%= select_tag('author', principals_options_for_select(@assignables, @workperformance_report.user.id.to_s) ) %>
+      </p>
+      <p>
+        <label for='period'> Período </label>
+        <%= date_field_tag '@workperformance_report.start_period', '', :value => @workperformance_report.start_period.to_date, :size => 10 %><%= calendar_for('issue_due_date') %>
+      </p>
+      <p>
+        <label for=''> Situação projeto </label>
+        <%= select_tag('project_status',
+                        principals_options_for_select(@report_statuses,
+                                                      @workperformance_report.workperformance_report_status.issue_status_id.to_s) )%>
+      </p>
+      <p>
+        <label for=''> Sinalizador </label>
+      </p>
+      <p>
+        <label for=''> Objetivo geral </label>
+      </p>
+      <p>
+        <label for=''> Situação atual </label>
+      </p>
+      <p>
+        <label for=''> Próximos passos </label>
+      </p>
+      <p>
+        <label for=''> Riscos e pontos de atenção </label>
+      </p>
+
   </div>
   <%= submit_tag l(:button_submit) %>
 <% end %>

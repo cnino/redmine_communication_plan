@@ -5,7 +5,7 @@ class WorkperformanceReport < ActiveRecord::Base
   has_many :change_requests
   has_many :schedule_activities
   belongs_to :flag
-  has_one :workperformance_report_status
+  belongs_to :workperformance_report_status
   belongs_to :user
-  
+
 end
