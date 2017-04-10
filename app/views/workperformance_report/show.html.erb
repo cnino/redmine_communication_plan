@@ -2,35 +2,69 @@
 <%= form_tag :action => 'update' do %>
   <%= error_messages_for 'workperformance_report' %>
   <div class="box tabular">
+      <p style="text-align:right"> Enviado em: <%= format_date(@workperformance_report.send_date) %> </p>
       <p>
-        <label for='author'><%= l(:field_assigned_to) %></label>
-        <%= select_tag('author', principals_options_for_select(@assignables, @workperformance_report.user.id.to_s) ) %>
+        <label for='user_id'><%= l(:field_author) %></label>
+        <%= select_tag('user_id', principals_options_for_select(@assignables, @workperformance_report.user.id.to_s) ) %>
       </p>
       <p>
         <label for='period'> Período </label>
-        <%= date_field_tag '@workperformance_report.start_period', '', :value => @workperformance_report.start_period.to_date, :size => 10 %><%= calendar_for('issue_due_date') %>
+        <%= date_field_tag 'start_period',
+                           '',
+                           :value => @workperformance_report.start_period.to_date,
+                           :size => 10 %> <%= calendar_for('period') %>
+        a
+        <%= date_field_tag 'end_period',
+                           '',
+                           :value => @workperformance_report.end_period.to_date,
+                           :size => 10 %> <%= calendar_for('period') %>
       </p>
       <p>
         <label for=''> Situação projeto </label>
-        <%= select_tag('project_status',
+        <%= select_tag('workperformance_report_status',
                         principals_options_for_select(@report_statuses,
                                                       @workperformance_report.workperformance_report_status.issue_status_id.to_s) )%>
       </p>
       <p>
         <label for=''> Sinalizador </label>
+        <%= select_tag('flag',
+                        principals_options_for_select(@flags,
+                                                      @workperformance_report.flag_id.to_s) )%>
       </p>
       <p>
         <label for=''> Objetivo geral </label>
+        <%= text_area_tag 'overall_objective', @workperformance_report.overall_objective %>
       </p>
       <p>
         <label for=''> Situação atual </label>
+        <%= text_area_tag 'status_description', @workperformance_report.status_description %>
       </p>
       <p>
         <label for=''> Próximos passos </label>
+        <%= text_area_tag 'next_steps', @workperformance_report.next_steps %>
       </p>
       <p>
         <label for=''> Riscos e pontos de atenção </label>
+        <%= text_area_tag 'risks', @workperformance_report.risks %>
       </p>
+
+      <!-- Montagem do cronograma -->
+        <table class="list issues">
+          <thead>
+            <th>Macro atividade</th>
+            <th>Planejado</th>
+            <th>Realizado</th>
+          </thead>
+          <tbody>
+            <% @schedule_activities.each do |a| %>
+            <tr>
+                <td> <%= a.activity %> </td>
+                <td> <%= text_field_tag "planned-#{a.id}", a.planned %> </td>
+                <td> <%= text_field_tag "accomplished-#{a.id}", a.accomplished %> </td>
+            </tr>
+            <% end %>
+          </tboby>
+        </table>
 
   </div>
   <%= submit_tag l(:button_submit) %>

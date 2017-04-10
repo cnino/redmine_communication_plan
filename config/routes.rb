@@ -14,7 +14,7 @@ match 'project/:project_id/communication_plan', :controller => 'communication_pl
 #lista de relatórios do projeto
 get 'project/:project_id/workperformance_report', :to => 'workperformance_report#index'
 get 'project/:project_id/workperformance_report/:id', :to => 'workperformance_report#show'
-put 'project/:project_id/workperformance_report/:id', :to => 'workperformance_report#update'
+post 'project/:project_id/workperformance_report/:id', :to => 'workperformance_report#update'
 
 #criação e edição de relatório, dentro do projeto
 
