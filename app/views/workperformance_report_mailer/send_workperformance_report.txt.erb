@@ -1,0 +1,45 @@
+<table>
+  <tr>
+    <td> Projeto </td>
+    <td colspan="3"> <%= @project_name %> </td>
+  </tr>
+  <tr>
+    <td> Período </td>
+    <td> <%= format_date(@report_data.start_period) %> a <%= format_date(@report_data.end_period) %> </td>
+    <td> Situação </td>
+    <td> <%= @report_data.issue_status.name %> </td>
+  </tr>
+  <tr>
+    <td> Elaborado por </td>
+    <td colspan="2"> <%= @report_data.user.firstname %> <%= @report_data.user.lastname %>  </td>
+    <td> <center> <div title="<%= @report_data.flag.name %>" style="border: 1px solid #2F4F4F; width:17px; height:17px; background-color:#<%= @report_data.flag.color%>"> </div> </center> </td>
+  </tr>
+  <tr>
+    <td colspan="4">
+      <center><br> Relatório de Acompanhamento de Projeto </b></center>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="4">
+      <%= @report_data.overall_objective %>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="4">
+      <p>Próximos passos</p>
+      <%= @report_data.next_steps %>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="4">
+      <p>Riscos e pontos de atenção</p>
+      <%= @report_data.risks %>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="4">
+      <p>Cronograma</p>
+    </td>
+  </tr>
+
+</table>

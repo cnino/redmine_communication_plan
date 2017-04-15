@@ -2,6 +2,6 @@ class TargetAudience < ActiveRecord::Base
   unloadable
 
   belongs_to :communication_plan
-  has_one :user
-  
+  belongs_to :user
+
 end

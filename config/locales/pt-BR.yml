@@ -4,3 +4,10 @@ pt-BR:
   label_send_date: Data de envio
   label_target_audience: Público-alvo
   label_flag: Sinalizador
+  label_report_new: Novo Relatório
+  error_remove_addressee: Erro ao tentar remover destinatário.
+  label_addressee_new: Novo destinatário
+  label_schedule: Cronograma
+  button_save_send_report: Salvar e enviar relatório
+  label_planned: Planejado
+  label_accomplished: Realizado

@@ -1,6 +1,13 @@
 # English strings go here for Rails i18n
 en:
-  label_communication_plan: Communicatio Plan
+  label_communication_plan: Communication Plan
   label_send_date: Send date
   label_target_audience: Target audience
   label_flag: Flag
+  label_report_new: New Report
+  error_remove_addressee: Error while trying to remove addressee.
+  label_addressee_new: New addressee
+  label_schedule: Schedule
+  button_save_send_report: Save and send report
+  label_planned: Planned
+  label_accomplished: Accomplished

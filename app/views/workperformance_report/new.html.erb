@@ -1,8 +1,7 @@
 <h2> <%= l(:label_report) %> </h2>
-<%= form_tag :action => 'update' do %>
+<%= form_tag :action => 'create' do %>
   <%= error_messages_for 'workperformance_report' %>
   <div class="box tabular">
-    <!-- TODO opção de exclusão do relatório, enquanto não for enviado ainda -->
     <!-- TODO locale -->
       <p style="text-align:right"> Enviado em: <%= format_date(@workperformance_report.send_date) %> </p>
       <p>
@@ -10,7 +9,6 @@
         <%= select_tag('user_id', principals_options_for_select(@assignables, @workperformance_report.user.id.to_s) ) %>
       </p>
       <p>
-        <!-- FIXME tenho restrições de datas, em função de relatórios já enviados -->
         <!-- TODO locale -->
         <label for='period'> Período </label>
         <%= date_field_tag 'start_period',
@@ -61,13 +59,13 @@
         <%= text_area_tag 'risks', @workperformance_report.risks %>
       </p>
 
-      <h2> <%= l(:label_schedule) %> </h2>
       <!-- Montagem do cronograma -->
         <table class="list issues">
           <thead>
-            <th><%= l(:field_activity) %></th>
-            <th><%= l(:label_planned) %></th>
-            <th><%= l(:label_accomplished) %></th>
+            <!-- TODO locale -->
+            <th>Macro atividade</th>
+            <th>Planejado</th>
+            <th>Realizado</th>
           </thead>
           <tbody>
             <% @schedule_activities.each do |a| %>
@@ -79,18 +77,8 @@
             <% end %>
           </tboby>
         </table>
-        <h2> <%= l(:label_target_audience) %> </h2>
-        <!-- FIXME arrumar alinhamento -->
-        <p align="left">
-            <% if @workperformance_report.send_date.nil?  %>
-              <%= @formatted_target_audience %>
-            <% else %>
-              <%= @workperformance_report.sent_target_audience %>
-            <% end %>
-        </p>
+
   </div>
-  <%= submit_tag l(:button_save), :name => "salvar", :disabled => @workperformance_report.send_date.nil? ? false : true %>
-  <%= submit_tag l(:button_save_send_report), :name => "enviar", :disabled => @workperformance_report.send_date.nil? ? false : true %>
-  <!-- FIXME botão de cancelar, voltar -->
+  <%= submit_tag l(:button_create) %>
 <% end %>
 <br>

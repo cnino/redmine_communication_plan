@@ -1,0 +1,24 @@
+<h2> <%= l(:label_addressee_new) %> </h2>
+<%= form_tag :action => 'create' do %>
+  <div class="box tabular">
+    <p>
+      <!-- TODO Bloquear campos quando usuário externo/interno -->
+      <!-- TODO locale -->
+      <label for='active'> Destinatário externo </label>
+      <%= check_box_tag 'external_user', '1', @target_audience.external_user %>
+    </p>
+    <p>
+      <label for='user_id'><%= l(:field_name) %></label>
+      <%= select_tag('user_id', principals_options_for_select(@assignables) ) %>
+    </p>
+    <p>
+      <label for='user_name'><%= l(:field_name) %></label>
+      <%= text_field_tag "user_name", @target_audience.user_name %>
+    </p>
+    <p>
+      <label for='user_email'><%= l(:field_mail) %></label>
+      <%= text_field_tag "user_email", @target_audience.user_email %>
+    </p>
+  </div>
+  <%= submit_tag l(:button_submit) %>
+<% end %>

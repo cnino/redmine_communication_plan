@@ -5,7 +5,8 @@ class WorkperformanceReport < ActiveRecord::Base
   has_many :change_requests
   has_many :schedule_activities
   belongs_to :flag
-  belongs_to :workperformance_report_status
+  #FIXME Como garantir que, quando for excluir o estado no Redmine, eu bloqueie, se estiver em uso por algum relatório?
+  belongs_to :issue_status
   belongs_to :user
 
 end
