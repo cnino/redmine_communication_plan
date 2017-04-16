@@ -17,6 +17,7 @@ class TargetAudienceController < ApplicationController
 
   def create
     logger.info ">>> (^_^) [TargetAudienceController#create]"
+    #FIXME não permitir incluir o mesmo usuário de novo (interno ou externo)
 
     #TODO logger
     params.each do |p|
@@ -36,7 +37,6 @@ class TargetAudienceController < ApplicationController
       @target_audience.user_id = params[:user_id]
     end
 
-    #FIXME if em uma linha?
     if @target_audience.save
       #TODO locale
       flash[:notice] = 'Configurações salvas.'
@@ -52,11 +52,10 @@ class TargetAudienceController < ApplicationController
     @target_audience = TargetAudience.find(params[:id])
     @communication_plan = CommunicationPlan.find(params[:communication_plan_id])
 
-    #FIXME if em uma linha?
     if @target_audience.destroy
       flash[:notice] = l(:notice_successful_delete)
     else
-      flash[:error] = l(:error_remove_addressee)
+      flash[:error] = l(:error_remove_recipient)
     end
     redirect_to :controller => 'communication_plan', :action => 'show'
   end

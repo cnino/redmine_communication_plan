@@ -5,9 +5,12 @@ en:
   label_target_audience: Target audience
   label_flag: Flag
   label_report_new: New Report
-  error_remove_addressee: Error while trying to remove addressee.
-  label_addressee_new: New addressee
+  error_remove_recipient: Error while trying to remove recipient.
+  label_recipient_new: New recipient
   label_schedule: Schedule
   button_save_send_report: Save and send report
   label_planned: Planned
   label_accomplished: Accomplished
+  text_cancel_report_confirm: Are you sure? This action will destroy this report.
+  button_cancel_report: Cancel report
+  label_sent_on: Sent on

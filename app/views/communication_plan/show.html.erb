@@ -5,7 +5,9 @@
     <p>
       <label for='user_id'><%= l(:field_author) %></label>
       <%= select_tag('user_id', principals_options_for_select(@assignables, @communication_plan.user.nil? ? '' : @communication_plan.user.id.to_s) ) %>
-      <em class="info">Verifique se o membros do projeto estão cadastrados.</em>
+      <% if @assignables.size == 0 %>
+        <em class="info">Verifique se o membros do projeto estão cadastrados.</em>
+      <% end %>
     </p>
     <p>
       <!-- TODO locale -->
@@ -34,7 +36,7 @@
   </div>
 
     <div class="contextual">
-      <p><%= link_to l(:label_addressee_new), "communication_plan/#{@communication_plan.id}/target_audience/new", :class => "icon icon-add" %></p>
+      <p><%= link_to l(:label_recipient_new), "communication_plan/#{@communication_plan.id}/target_audience/new", :class => "icon icon-add" %></p>
     </div>
     <h3><%= l(:label_target_audience) %></h3>
     <!-- Montagem do lista de público-alvo -->
@@ -45,7 +47,7 @@
           <th></th>
         </thead>
         <tbody>
-          <% @target_audiences.each do |t| %>
+          <% @target_audience.each do |t| %>
           <tr class="<%= cycle('odd', 'even') %> issue">
               <td class="name"> <%= t.user_name %> </td>
               <td> <%= t.user_email %> </td>

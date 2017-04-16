@@ -2,9 +2,13 @@
 <%= form_tag :action => 'update' do %>
   <%= error_messages_for 'workperformance_report' %>
   <div class="box tabular">
-    <!-- TODO opção de exclusão do relatório, enquanto não for enviado ainda -->
-    <!-- TODO locale -->
-      <p style="text-align:right"> Enviado em: <%= format_date(@workperformance_report.send_date) %> </p>
+      <p style="text-align:right">
+        <% if @workperformance_report.send_date.nil? %>
+          <%= link_to l(:button_cancel_report), {:action => 'cancel_report'}, :class => 'icon icon-del', :data => {:confirm => l(:text_cancel_report_confirm)} %> | Relatório não enviado
+        <% else %>
+          <%= l(:label_sent_on) %>: <%= format_date(@workperformance_report.send_date) %>
+        <% end %>
+      </p>
       <p>
         <label for='user_id'><%= l(:field_author) %></label>
         <%= select_tag('user_id', principals_options_for_select(@assignables, @workperformance_report.user.id.to_s) ) %>
@@ -91,6 +95,6 @@
   </div>
   <%= submit_tag l(:button_save), :name => "salvar", :disabled => @workperformance_report.send_date.nil? ? false : true %>
   <%= submit_tag l(:button_save_send_report), :name => "enviar", :disabled => @workperformance_report.send_date.nil? ? false : true %>
-  <!-- FIXME botão de cancelar, voltar -->
+  <%= link_to l(:button_back), {:action => 'index'}, :class => 'icon icon-cancel' %>
 <% end %>
 <br>

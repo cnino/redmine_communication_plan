@@ -1,24 +1,40 @@
-<h2> <%= l(:label_addressee_new) %> </h2>
+<script type="text/javascript">
+    function checkUserType (){
+		if (document.getElementById("external_user").checked){
+      document.getElementById("div_internal_user").style.display = "none";
+      document.getElementById("div_external_user").style.display = "block";
+		} else{
+      document.getElementById("div_internal_user").style.display = "block";
+			document.getElementById("div_external_user").style.display = "none";
+		}
+	}
+</script>
+
+<h2> <%= l(:label_recipient_new) %> </h2>
 <%= form_tag :action => 'create' do %>
   <div class="box tabular">
     <p>
-      <!-- TODO Bloquear campos quando usuário externo/interno -->
       <!-- TODO locale -->
       <label for='active'> Destinatário externo </label>
-      <%= check_box_tag 'external_user', '1', @target_audience.external_user %>
+      <%= check_box_tag 'external_user', '1', @target_audience.external_user, :onclick => "checkUserType()" %>
     </p>
-    <p>
-      <label for='user_id'><%= l(:field_name) %></label>
-      <%= select_tag('user_id', principals_options_for_select(@assignables) ) %>
-    </p>
-    <p>
-      <label for='user_name'><%= l(:field_name) %></label>
-      <%= text_field_tag "user_name", @target_audience.user_name %>
-    </p>
-    <p>
-      <label for='user_email'><%= l(:field_mail) %></label>
-      <%= text_field_tag "user_email", @target_audience.user_email %>
-    </p>
+    <div id="div_internal_user">
+      <p>
+        <label for='user_id'><%= l(:field_name) %></label>
+        <%= select_tag('user_id', principals_options_for_select(@assignables) ) %>
+      </p>
+    </div>
+    <div id="div_external_user" style="display: none">
+      <p>
+        <label for='user_name'><%= l(:field_name) %></label>
+        <%= text_field_tag "user_name", @target_audience.user_name %>
+      </p>
+      <p>
+        <label for='user_email'><%= l(:field_mail) %></label>
+        <%= text_field_tag "user_email", @target_audience.user_email %>
+      </p>
+    </div>
   </div>
-  <%= submit_tag l(:button_submit) %>
+  <%= submit_tag l(:button_save) %>
+  <%= link_to l(:button_back), {:controller => 'communication_plan', :action => 'show'}, :class => 'icon icon-cancel' %>
 <% end %>

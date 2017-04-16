@@ -5,9 +5,12 @@ pt-BR:
   label_target_audience: Público-alvo
   label_flag: Sinalizador
   label_report_new: Novo Relatório
-  error_remove_addressee: Erro ao tentar remover destinatário.
-  label_addressee_new: Novo destinatário
+  error_remove_recipient: Erro ao tentar remover destinatário.
+  label_recipient_new: Novo destinatário
   label_schedule: Cronograma
   button_save_send_report: Salvar e enviar relatório
   label_planned: Planejado
   label_accomplished: Realizado
+  text_cancel_report_confirm: Você tem certeza? Esta ação descartará o relatório.
+  button_cancel_report: Cancelar relatório
+  label_sent_on: Enviado em

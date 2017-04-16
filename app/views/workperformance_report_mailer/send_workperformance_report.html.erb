@@ -1,0 +1,58 @@
+<table border="1" width="700px" style="border-collapse: collapse" cellpadding="6px">
+  <tr>
+    <td style="background-color: lightgray; font-weight: bold"> Projeto </td>
+    <td colspan="3"> <%= @project_name %> </td>
+  </tr>
+  <tr>
+    <td style="background-color: lightgray; font-weight: bold"> Per&iacute;odo </td>
+    <td> <%= format_date(@report_data.start_period) %> a <%= format_date(@report_data.end_period) %> </td>
+    <td style="background-color: lightgray; font-weight: bold"> Situa&ccedil;&atilde;o </td>
+    <td> <%= @report_data.issue_status.name %> </td>
+  </tr>
+  <tr>
+    <td style="background-color: lightgray; font-weight: bold"> Elaborado por </td>
+    <td colspan="2"> <%= @report_data.user.firstname %> <%= @report_data.user.lastname %> </td>
+    <td> <center> <div title="<%= @report_data.flag.name %>" style="border: 1px solid #2F4F4F; width:17px; height:17px; background-color:#<%= @report_data.flag.color%>"> </div> </center> </td>
+  </tr>
+  <tr>
+    <td colspan="4">
+      <p style="font-weight: bold; line-height: 200%; text-align: center">Relat&oacute;rio de Acompanhamento de Projeto</p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="4">
+      <p style="line-height: 200%"> <%= @report_data.overall_objective %> </p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="4">
+      <p style="font-weight: bold;">Pr&oacute;ximos passos</p>
+      <p><%= @report_data.next_steps %></p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="4">
+      <p style="font-weight: bold;">Riscos e pontos de aten&ccedil;&atilde;o</p>
+      <p><%= @report_data.risks %></p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="4">
+      <p style="font-weight: bold; line-height: 200%"> <%= l(:label_schedule) %> </p>
+      <table border="1" width="700px" cellpadding="6px" style="border-collapse: collapse;">
+		  <tr style="background-color: lightgray; font-weight: bold">
+			  <td>Atividade</td>
+			  <td>Planejado</td>
+			  <td>Realizado</td>
+		  </tr>
+      <% @report_schedule.each do |item| %>
+        <tr>
+  			  <td> <%= item.activity %> </td>
+  			  <td> <%= item.planned %> </td>
+  			  <td> <%= item.accomplished %> </td>
+  		  </tr>
+      <% end %>
+      </table>
+    </td>
+  </tr>
+</table>

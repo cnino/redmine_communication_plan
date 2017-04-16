@@ -26,30 +26,35 @@ class CommunicationPlanController < ApplicationController
     #uso a função assignable_users já definida em Project pelo Redmine
     @assignables = @project.assignable_users
 
-    #se é a primeira vez que o plano está sendo acessado dentro do projeto, ainda não existe o objeto
-    #então, tenho que criá-lo
-    if (@communication_plan == nil)
+    @communication_plan = CommunicationPlan.where(project_id: @project).first
+    #se é a primeira vez que o plano está sendo acessado dentro do projeto,
+    #ainda não existe o objeto, então tenho que criá-lo
+    if (@communication_plan.nil?)
       @communication_plan = CommunicationPlan.create(project: @project, periodicity: 1)
-    else
-      @communication_plan = CommunicationPlan.where(project_id: @project).first
     end
 
     #lista de opções de periodicidades
     #FIXME Colocar isso numa tabela para facilitar a configuração
     @periodicity_list = [["Semanal", 1], ["Quinzenal", 2], ["Mensal", 3]]
 
+    logger.info "Tenho id? #{@communication_plan.id}"
     #lista de público-alvo configurado para este plano de comunicação
-    @target_audiences = TargetAudience.where(communication_plan: @communication_plan)
+    @target_audience = TargetAudience.where(communication_plan: @communication_plan)
+    logger.info ">> Lista de público-alvo antes: (#{@target_audience.class}) #{@target_audience}"
 
     #tenho que fazer uma verificação e inclusão de dados: usuários internos não estão com o nome e e-mail preenchidos
-    @target_audiences.each do |person|
-      unless person.external_user
-        @user_information = User.includes(:email_address).find(person.user_id)
+    logger.info "TESTE"
+    @target_audience.each do |ta|
+      logger.info "TESTA"
+      logger.info "[Iterando] com pessoa #{ta.id}, externo? #{ta.external_user}"
+      unless ta.external_user
+        @user_information = User.includes(:email_address).find(ta.user_id)
         #TODO Tem uma forma de pegar o nome completo?
-        person.user_name = @user_information.firstname + " " + @user_information.lastname
-        person.user_email = @user_information.email_address.address
+        ta.user_name = @user_information.firstname + " " + @user_information.lastname
+        ta.user_email = @user_information.email_address.address
       end
     end
+    logger.info ">> Lista de público-alvo depois: #{@target_audience}"
 
   end
 

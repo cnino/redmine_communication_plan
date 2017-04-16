@@ -20,6 +20,7 @@ delete 'projects/:project_id/communication_plan/:communication_plan_id/target_au
 #lista de relatórios do projeto
 get 'projects/:project_id/workperformance_report', :to => 'workperformance_report#index'
 get 'projects/:project_id/workperformance_report/new', :to => 'workperformance_report#new'
+get 'projects/:project_id/workperformance_report/:id/cancel_report', :to => 'workperformance_report#cancel_report'
 get 'projects/:project_id/workperformance_report/:id', :to => 'workperformance_report#show'
 post 'projects/:project_id/workperformance_report/:id', :to => 'workperformance_report#update'
 post 'projects/:project_id/workperformance_report', :to => 'workperformance_report#create'

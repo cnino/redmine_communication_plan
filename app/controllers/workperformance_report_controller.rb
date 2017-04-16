@@ -90,18 +90,39 @@ class WorkperformanceReportController < ApplicationController
       end
     end
 
-    #verifico se devo enviar o relatório também
+    #verifico se devo enviar o relatório também por e-mail
     logger.info ">>> Verificar se o relatório deve ser enviado..."
     unless params[:enviar].nil?
       logger.info ">>> Sim, devo enviar"
       @workperformance_report.send_date = Time.now
       @workperformance_report.sent_target_audience = get_formatted_target_audience
-
-      logger.info ">>> O que temos aqui? [#{@workperformance_report.sent_target_audience}]"
     end
 
-
     if @workperformance_report.save
+      logger.info ">>> Ok, salvou. Vou enviar o e-mail."
+      #verifico se devo enviar o relatório também por e-mail
+      unless params[:enviar].nil?
+        logger.info ">>> Vai enviar o e-mail."
+=begin
+        WorkperformanceReportMailer.send_workperformance_report(get_array_target_audience,
+                                          @project.name,
+                                          @workperformance_report,
+                                          ScheduleActivity.where(workperformance_report: @workperformance_report))
+=end
+        @recipients = get_array_target_audience
+        @recipients.each do |r|
+          logger.info ">>> Enviando e-mail para #{r.user_name} (#{r.user_email})"
+          @email = WorkperformanceReportMailer.send_workperformance_report(r.user_email,
+                                  @project.name,
+                                  @workperformance_report,
+                                  ScheduleActivity.where(workperformance_report: @workperformance_report))
+          logger.info "Tipo email [#{@email.class}]: #{@email}"
+          @email.deliver_now
+        end
+
+        logger.info ">>> Já enviou o e-mail."
+      end
+
       redirect_to action: "show", id: @workperformance_report
       flash[:notice] = 'Relatório salvo.'
     else
@@ -221,6 +242,28 @@ class WorkperformanceReportController < ApplicationController
 
   end
 
+  #Cancela um relatório que ainda não foi enviado
+  def cancel_report
+    logger.info ">>> (^_^) [WorkperformanceReportController#cancel_report]"
+    @project = Project.find(params[:project_id])
+    @communication_plan = CommunicationPlan.where(project_id: @project).first
+    @workperformance_report = WorkperformanceReport.find(params[:id])
+    @schedule_activities = ScheduleActivity.where(workperformance_report: @workperformance_report)
+
+    #garanto que o relatório não foi enviado
+    if @workperformance_report.send_date.nil?
+      #remover as tarefas do cronograma e o relatório
+      @schedule_activities.destroy_all
+      @workperformance_report.destroy
+      flash[:notice] = "Relatório cancelado com sucesso."
+    else
+      flash[:error] = "Erro ao tentar cancelar relatório."
+    end
+
+    redirect_to action: "index"
+  end
+
+
   private
 
   #retorna uma string de todo o público-alvo, no padrão "<nome> (<email>), <nome> (<email>)"
@@ -242,5 +285,22 @@ class WorkperformanceReportController < ApplicationController
     return @formatted_list.join(", ")
   end
 
+  def get_array_target_audience
+    #lista de público-alvo configurado para este plano de comunicação
+    @target_audience = TargetAudience.where(communication_plan: @communication_plan)
+
+    @array_target_audience = Array.new
+
+    #tenho que fazer uma verificação e inclusão de dados: usuários internos não estão com o nome e e-mail preenchidos
+    @target_audience.each do |person|
+      unless person.external_user
+        @user_information = User.includes(:email_address).find(person.user_id)
+        person.user_name = @user_information.firstname + " " + @user_information.lastname
+        person.user_email = @user_information.email_address.address
+      end
+      @array_target_audience << person
+    end
+    return @array_target_audience
+  end
 
 end
