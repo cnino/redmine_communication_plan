@@ -4,14 +4,13 @@
   <div class="box tabular">
     <p>
       <label for='user_id'><%= l(:field_author) %></label>
-      <%= select_tag('user_id', principals_options_for_select(@assignables, @communication_plan.user.nil? ? '' : @communication_plan.user.id.to_s) ) %>
+      <%= select_tag('user_id', principals_options_for_select(@assignables, @communication_plan.user.nil? ? '' : @communication_plan.user.id.to_s), :include_blank => true ) %>
       <% if @assignables.size == 0 %>
-        <em class="info">Verifique se o membros do projeto estão cadastrados.</em>
+        <em class="info">Verifique se os membros do projeto estão cadastrados.</em>
       <% end %>
     </p>
     <p>
-      <!-- TODO locale -->
-      <label for='periodicity'> Periodicidade </label>
+      <label for='periodicity'> <%= l(:label_periodicity)%> </label>
       <%= select_tag(:periodicity, options_for_select(@periodicity_list, @communication_plan.periodicity)) %>
     </p>
     <p>
@@ -19,8 +18,9 @@
       <label for='start_date'> Data de início </label>
       <%= date_field_tag 'start_date',
                          '',
-                         :value => @communication_plan.start_date.nil? ? '' : @communication_plan.start_date.to_date,
-                         :size => 10 %> <%= calendar_for('period') %>
+                         :value => @communication_plan.start_date.nil? ? '' : format_date(@communication_plan.start_date.to_date),
+                         :size => 10,
+                         :required => true %>
       <%= calendar_for('start_date') %>
     </p>
     <p>

@@ -11,7 +11,8 @@
   </tr>
   <tr>
     <td style="background-color: lightgray; font-weight: bold"> Elaborado por </td>
-    <td colspan="2"> <%= @report_data.user.firstname %> <%= @report_data.user.lastname %> </td>
+    <td> <%= @report_data.user.firstname %> <%= @report_data.user.lastname %> </td>
+    <td style="background-color: lightgray; font-weight: bold"> Sinalizador </td>
     <td> <center> <div title="<%= @report_data.flag.name %>" style="border: 1px solid #2F4F4F; width:17px; height:17px; background-color:#<%= @report_data.flag.color%>"> </div> </center> </td>
   </tr>
   <tr>
@@ -21,7 +22,14 @@
   </tr>
   <tr>
     <td colspan="4">
+      <p style="font-weight: bold;">Objetivo geral do projeto</p>
       <p style="line-height: 200%"> <%= @report_data.overall_objective %> </p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="4">
+      <p style="font-weight: bold;">Situa&ccedil;&atilde;o atual</p>
+      <p style="line-height: 200%"> <%= @report_data.status_description %> </p>
     </td>
   </tr>
   <tr>
@@ -42,12 +50,12 @@
       <table border="1" width="700px" cellpadding="6px" style="border-collapse: collapse;">
 		  <tr style="background-color: lightgray; font-weight: bold">
 			  <td>Atividade</td>
-			  <td>Planejado</td>
-			  <td>Realizado</td>
+			  <td> <%= l(:label_planned)%> </td>
+			  <td> <%= l(:label_accomplished)%> </td>
 		  </tr>
       <% @report_schedule.each do |item| %>
         <tr>
-  			  <td> <%= item.activity %> </td>
+  			  <td> <%= item.title %> </td>
   			  <td> <%= item.planned %> </td>
   			  <td> <%= item.accomplished %> </td>
   		  </tr>

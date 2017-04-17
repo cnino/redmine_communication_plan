@@ -14,3 +14,5 @@ en:
   text_cancel_report_confirm: Are you sure? This action will destroy this report.
   button_cancel_report: Cancel report
   label_sent_on: Sent on
+  text_cant_send_report: It is not possible to create a new report if there is a report that has not been submitted yet.
+  label_periodicity: Periodicity

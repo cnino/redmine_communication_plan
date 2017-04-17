@@ -1,80 +1,48 @@
 class CommunicationPlanController < ApplicationController
   unloadable
 
-=begin
-  def index
-    logger.info ">>> (^_^) [CommunicationPlanController#index]"
-    #O plano de comunicação está sempre dentro de um projeto
-    @project = Project.find(params[:project_id])
-    @communication_plan = CommunicationPlan.where(project_id: @project).first
-
-    #se é a primeira vez que o plano está sendo acessado dentro do projeto, ainda não existe o objeto
-    #então, tenho que criá-lo
-    if (@communication_plan == nil)
-      @communication_plan = CommunicationPlan.create(project: @project, periodicity: 1)
-    end
-
-    #uso a função assignable_users já definida em Project pelo Redmine
-    @assignables = @project.assignable_users
-  end
-=end
-
+  #Exibe as configurações do plano de comunicação do projeto atual
   def show
-    logger.info ">>> (^_^) [CommunicationPlanController#show]"
     #O plano de comunicação está sempre dentro de um projeto
     @project = Project.find(params[:project_id])
     #uso a função assignable_users já definida em Project pelo Redmine
     @assignables = @project.assignable_users
 
     @communication_plan = CommunicationPlan.where(project_id: @project).first
-    #se é a primeira vez que o plano está sendo acessado dentro do projeto,
-    #ainda não existe o objeto, então tenho que criá-lo
+    #se é a primeira vez que o plano está sendo acessado dentro do projeto, ainda não existe o objeto, então tenho que criá-lo
     if (@communication_plan.nil?)
-      @communication_plan = CommunicationPlan.create(project: @project, periodicity: 1)
+      @communication_plan = CommunicationPlan.create(project: @project, periodicity: 1, start_date: Time.now)
     end
 
     #lista de opções de periodicidades
     #FIXME Colocar isso numa tabela para facilitar a configuração
+    #TODO locale
     @periodicity_list = [["Semanal", 1], ["Quinzenal", 2], ["Mensal", 3]]
 
-    logger.info "Tenho id? #{@communication_plan.id}"
     #lista de público-alvo configurado para este plano de comunicação
     @target_audience = TargetAudience.where(communication_plan: @communication_plan)
-    logger.info ">> Lista de público-alvo antes: (#{@target_audience.class}) #{@target_audience}"
 
     #tenho que fazer uma verificação e inclusão de dados: usuários internos não estão com o nome e e-mail preenchidos
-    logger.info "TESTE"
     @target_audience.each do |ta|
-      logger.info "TESTA"
-      logger.info "[Iterando] com pessoa #{ta.id}, externo? #{ta.external_user}"
       unless ta.external_user
         @user_information = User.includes(:email_address).find(ta.user_id)
-        #TODO Tem uma forma de pegar o nome completo?
         ta.user_name = @user_information.firstname + " " + @user_information.lastname
         ta.user_email = @user_information.email_address.address
       end
     end
-    logger.info ">> Lista de público-alvo depois: #{@target_audience}"
 
   end
 
+  #Atualiza as configurações do plano de comunicação do usuário
   def update
-    logger.info ">>> (^_^) [CommunicationPlanController#update]"
     @project = Project.find(params[:project_id])
     @communication_plan = CommunicationPlan.where(project_id: @project).first
     @communication_plan.user_id = params[:user_id]
     @communication_plan.periodicity = params[:periodicity]
-    #FIXME Verificar formato de data de acordo com preferências de idioma do usuário
-    @communication_plan.start_date = params[:start_date] == "" ? nil : DateTime.strptime(params[:start_date], '%Y-%m-%d')
+    @communication_plan.start_date = params[:start_date] == "" ? nil : DateTime.strptime(params[:start_date], l('date.formats.default'))
     @communication_plan.active = params[:active] == "1"
     @communication_plan.automatic_creation = params[:automatic_creation] == "1"
 
-    #TODO logger
-=begin
-    params.each do |p|
-      logger.info "[#{p.class}] #{p}"
-    end
-=end
     if @communication_plan.save
       redirect_to action: "show", id: @communication_plan
       #TODO locale

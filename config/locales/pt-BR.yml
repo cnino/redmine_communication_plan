@@ -14,3 +14,5 @@ pt-BR:
   text_cancel_report_confirm: Você tem certeza? Esta ação descartará o relatório.
   button_cancel_report: Cancelar relatório
   label_sent_on: Enviado em
+  text_cant_send_report: Não é possível criar um novo relatório se houver um relatório pendente de envio.
+  label_periodicity: Periodicidade

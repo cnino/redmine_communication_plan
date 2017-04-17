@@ -1,3 +1,35 @@
+<script type="text/javascript">
+    function getNewEndDate(){
+      var periodicityType = <%= @communication_plan.periodicity %>;
+		  var period = document.getElementById("period").value;
+      if(isNaN(period)){
+        //TODO locale
+        alert("Digite apenas números.")
+        document.getElementById("period").value = 1;
+      } else{
+        //calcula a data final do período do relatório
+        //FIXME Pegar timezone do usuário
+        var newDate = new Date("<%= @workperformance_report.start_period.to_date %>" + "T00:00:00-03:00");
+
+        //FIXME período pode ser configurável no sistema (não só semanal, quinzenal e mensal)
+        if(periodicityType == 1){ //semanal
+          newDate.setDate(newDate.getDate() + 7 * period - 1);
+        } else if(periodicityType == 2){ //quinzenal (duas semanas)
+          newDate.setDate(newDate.getDate() + 14 * period - 1);
+        } else if(periodicityType == 3){ //mensal
+          newDate.setMonth(newDate.getMonth() + 1 * period);
+          newDate.setDate(newDate.getDate() - 1);
+        }
+
+        document.getElementById("end_period").value = newDate.toLocaleDateString();
+      }
+      function getIntervalPeriodicity(periodicity_list){
+        var days
+
+      }
+	}
+</script>
+
 <h2> <%= l(:label_report) %> </h2>
 <%= form_tag :action => 'update' do %>
   <%= error_messages_for 'workperformance_report' %>
@@ -11,24 +43,15 @@
       </p>
       <p>
         <label for='user_id'><%= l(:field_author) %></label>
-        <%= select_tag('user_id', principals_options_for_select(@assignables, @workperformance_report.user.id.to_s) ) %>
+        <%= select_tag('user_id', principals_options_for_select(@assignables, @workperformance_report.user.id.to_s), :include_blank => true ) %>
       </p>
       <p>
-        <!-- FIXME tenho restrições de datas, em função de relatórios já enviados -->
         <!-- TODO locale -->
         <label for='period'> Período </label>
-        <%= date_field_tag 'start_period',
-                           '',
-                           :value => @workperformance_report.start_period.nil? ? '': @workperformance_report.start_period.to_date,
-                           :size => 10 %>
-        <%= calendar_for('start_period') %>
-        <!-- TODO locale -->
-        &nbsp; a &nbsp;
-        <%= date_field_tag 'end_period',
-                           '',
-                           :value => @workperformance_report.end_period.nil? ? '' : @workperformance_report.end_period.to_date,
-                           :size => 10 %>
-        <%= calendar_for('end_period') %>
+        <%= text_field_tag "period", @period, size: 3, onchange: "getNewEndDate();" %>
+        <%= @periodicity_name %>, de
+        <%= text_field_tag "start_period", @workperformance_report.start_period.nil? ? '': format_date(@workperformance_report.start_period.to_date), size: 11, readonly: true %>
+        a <%= text_field_tag "end_period", @workperformance_report.end_period.nil? ? '': format_date(@workperformance_report.end_period.to_date), size: 11, readonly: true %>
       </p>
       <p>
         <!-- TODO locale -->
@@ -64,7 +87,8 @@
         <label for=''> Riscos e pontos de atenção </label>
         <%= text_area_tag 'risks', @workperformance_report.risks %>
       </p>
-
+    </div>
+    <div class="box tabular">
       <h2> <%= l(:label_schedule) %> </h2>
       <!-- Montagem do cronograma -->
         <table class="list issues">
@@ -76,13 +100,15 @@
           <tbody>
             <% @schedule_activities.each do |a| %>
             <tr>
-                <td> <%= a.activity %> </td>
+                <td> <%= a.title %> </td>
                 <td> <%= text_field_tag "planned-#{a.id}", a.planned %> </td>
                 <td> <%= text_field_tag "accomplished-#{a.id}", a.accomplished %> </td>
             </tr>
             <% end %>
           </tboby>
         </table>
+      </div>
+      <div class="box tabular">
         <h2> <%= l(:label_target_audience) %> </h2>
         <!-- FIXME arrumar alinhamento -->
         <p align="left">

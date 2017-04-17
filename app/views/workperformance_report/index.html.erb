@@ -3,7 +3,7 @@
 </div>
 
 <h2> <%= l(:label_report_plural) %> </h2>
-
+<%= error_messages_for 'workperformance_report' %>
 <% unless @workperformance_reports.present? %>
   <p class="nodata"><%= l(:label_no_data) %></p>
 <% else %>
@@ -21,7 +21,6 @@
         <tr class="<%= cycle('odd', 'even') %> issue">
           <td> <%= link_to "#{format_date(report.start_period)} a  #{format_date(report.end_period)}", :controller => "workperformance_report", :action => "show", :id => report %> </td>
           <td> <%= format_date(report.send_date) %> </td>
-          <!-- TODO Tem uma forma de pegar o nome completo? -->
           <td> <%= report.user.firstname %> <%= report.user.lastname %> </td>
           <td> <%= report.sent_target_audience %> </td>
           <td> <center> <div title="<%= report.flag.name %>" style="border: 1px solid #2F4F4F; width:17px; height:17px; background-color:#<%= report.flag.color%>"> </div> </center> </td>

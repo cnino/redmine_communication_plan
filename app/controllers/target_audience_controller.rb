@@ -2,28 +2,13 @@ class TargetAudienceController < ApplicationController
   unloadable
 
   def new
-    logger.info ">>> (^_^) [TargetAudienceController#new]"
-
-    #TODO logger
-    params.each do |p|
-      logger.info "[#{p.class}] #{p}"
-    end
-
     @project = Project.find(params[:project_id])
     @assignables = @project.assignable_users
-
     @target_audience = TargetAudience.new
   end
 
   def create
-    logger.info ">>> (^_^) [TargetAudienceController#create]"
     #FIXME não permitir incluir o mesmo usuário de novo (interno ou externo)
-
-    #TODO logger
-    params.each do |p|
-      logger.info "[#{p.class}] #{p}"
-    end
-
     @target_audience = TargetAudience.new
     @target_audience.communication_plan_id = params[:communication_plan_id]
 
@@ -48,7 +33,6 @@ class TargetAudienceController < ApplicationController
   end
 
   def destroy
-    logger.info ">>> (^_^) [TargetAudienceController#delete]"
     @target_audience = TargetAudience.find(params[:id])
     @communication_plan = CommunicationPlan.find(params[:communication_plan_id])
 
