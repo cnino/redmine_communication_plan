@@ -24,7 +24,7 @@ class TargetAudienceController < ApplicationController
 
     if @target_audience.save
       #TODO locale
-      flash[:notice] = 'Configurações salvas.'
+      flash[:notice] = l(:notice_successful_update)
     else
       #TODO locale
       flash[:error] = 'Erro ao salvar.'

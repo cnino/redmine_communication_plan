@@ -16,3 +16,10 @@ pt-BR:
   label_sent_on: Enviado em
   text_cant_send_report: Não é possível criar um novo relatório se houver um relatório pendente de envio.
   label_periodicity: Periodicidade
+  label_weekly: Semanal
+  label_biweekly: Quinzenal
+  label_monthly: Mensal
+  label_biweek: Quinzena
+  notice_failed_create_report: Erro ao criar o relatório.
+  notice_successful_send_report: Relatório enviado com sucesso.
+  notice_successful_canceled_report: Relatório cancelado com sucesso.

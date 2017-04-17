@@ -16,3 +16,10 @@ en:
   label_sent_on: Sent on
   text_cant_send_report: It is not possible to create a new report if there is a report that has not been submitted yet.
   label_periodicity: Periodicity
+  label_weekly: Weekly
+  label_biweekly: Biweekly
+  label_monthly: Monthly
+  label_biweek: Biweek
+  notice_failed_create_report: Error creating report.
+  notice_successful_send_report: Report successfully sent.
+  notice_successful_canceled_report: Report successfully canceled.

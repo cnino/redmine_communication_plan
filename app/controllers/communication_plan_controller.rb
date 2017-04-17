@@ -16,8 +16,7 @@ class CommunicationPlanController < ApplicationController
 
     #lista de opções de periodicidades
     #FIXME Colocar isso numa tabela para facilitar a configuração
-    #TODO locale
-    @periodicity_list = [["Semanal", 1], ["Quinzenal", 2], ["Mensal", 3]]
+    @periodicity_list = [[l(:label_weekly), 1], [l(:label_biweekly), 2], [l(:label_monthly), 3]]
 
     #lista de público-alvo configurado para este plano de comunicação
     @target_audience = TargetAudience.where(communication_plan: @communication_plan)
@@ -46,7 +45,7 @@ class CommunicationPlanController < ApplicationController
     if @communication_plan.save
       redirect_to action: "show", id: @communication_plan
       #TODO locale
-      flash[:notice] = 'Configurações salvas.'
+      flash[:notice] = l(:notice_successful_update)
     else
       redirect_to action: "show", id: @communication_plan
       #TODO locale

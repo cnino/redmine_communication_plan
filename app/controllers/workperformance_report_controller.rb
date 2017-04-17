@@ -78,11 +78,11 @@ class WorkperformanceReportController < ApplicationController
       #TODO locale
       #informações sobre periodicidades
       @period = 1 #sempre considero um período
-      @periodicity_name = "Semana(s)"
+      @periodicity_name = l(:label_week)
       if @communication_plan.periodicity == 2
-        @periodicity_name = "Quinzena(s)"
+        @periodicity_name = l(:label_biweek)
       elsif @communication_plan.periodicity == 3
-        @periodicity_name = "Mês(es)"
+        @periodicity_name = l(:label_month)
       end
     end
   end
@@ -92,11 +92,6 @@ class WorkperformanceReportController < ApplicationController
     @project = Project.find(params[:project_id])
     @communication_plan = CommunicationPlan.where(project_id: @project).first
     @workperformance_report = WorkperformanceReport.new
-
-    logger.info ">>> Parâmetros:"
-    params.each do |p, v|
-      logger.info "#{p}: #{v}"
-    end
 
     #dados do form
     @workperformance_report.communication_plan = @communication_plan
@@ -142,11 +137,11 @@ class WorkperformanceReportController < ApplicationController
 
       redirect_to action: "show", id: @workperformance_report
       #TODO locale
-      flash[:notice] = 'Relatório salvo.'
+      flash[:notice] = l(:notice_successful_create)
     else
       redirect_to action: "index"
       #TODO locale
-      flash[:error] = 'Erro ao salvar.'
+      flash[:error] = l(:notice_failed_create_report)
     end
 
   end
@@ -176,11 +171,11 @@ class WorkperformanceReportController < ApplicationController
     #TODO locale
     #informações sobre periodicidades
     @period = 1 #sempre considero um período
-    @periodicity_name = "Semana(s)"
+    @periodicity_name = l(:label_week)
     if @communication_plan.periodicity == 2
-      @periodicity_name = "Quinzena(s)"
+      @periodicity_name = l(:label_biweek)
     elsif @communication_plan.periodicity == 3
-      @periodicity_name = "Mês(es)"
+      @periodicity_name = l(:label_month)
     end
 
     #gera a lista de público-alvo para exibir na tela
@@ -243,7 +238,7 @@ class WorkperformanceReportController < ApplicationController
 
       redirect_to action: "show", id: @workperformance_report
       #TODO locale
-      flash[:notice] = params[:enviar].nil? ? 'Relatório salvo.' : 'Relatório enviado.'
+      flash[:notice] = params[:enviar].nil? ? l(:notice_successful_update) : 'Relatório enviado com sucesso.'
     else
       redirect_to action: "index"
       #TODO locale
@@ -264,7 +259,7 @@ class WorkperformanceReportController < ApplicationController
       @schedule_activities.destroy_all
       @workperformance_report.destroy
       #TODO locale
-      flash[:notice] = "Relatório cancelado com sucesso."
+      flash[:notice] = l(:notice_successful_canceled_report)
     else
       #TODO locale
       flash[:error] = "Erro ao tentar cancelar relatório."
