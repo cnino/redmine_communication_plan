@@ -34,11 +34,17 @@ class CommunicationPlanController < ApplicationController
 
   #Atualiza as configurações do plano de comunicação do usuário
   def update
+    logger.info ">>>>>> update"
     @project = Project.find(params[:project_id])
     @communication_plan = CommunicationPlan.where(project_id: @project).first
     @communication_plan.user_id = params[:user_id]
     @communication_plan.periodicity = params[:periodicity]
-    @communication_plan.start_date = params[:start_date] == "" ? nil : DateTime.strptime(params[:start_date], l('date.formats.default'))
+    if params[:start_date].include? "-"
+      @communication_plan.start_date = DateTime.strptime(params[:start_date], "%Y-%m-%d")
+    else
+      @communication_plan.start_date = DateTime.strptime(params[:start_date], l('date.formats.default'))
+    end
+    #@communication_plan.start_date = params[:start_date] == "" ? nil : DateTime.strptime(params[:start_date], l('date.formats.default'))
     @communication_plan.active = params[:active] == "1"
     @communication_plan.automatic_creation = params[:automatic_creation] == "1"
 
